@@ -1,0 +1,26 @@
+{
+    "name": "boenrobot/composer-install-library-of-functions",
+    "description": "A Composer plugin to handle the \"library-of-functions\" package type. This type allows functions to be registered to be autoloaded via \"files\", but only if they aren't already defined. Mostly useful for polyfills.",
+    "type": "composer-plugin",
+    "license": "LGPL-2.1-only",
+    "authors": [
+        {
+            "name": "Vasil Rangelov",
+            "email": "boen.robot@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "boenrobot\\": "src/boenrobot"
+        }
+    },
+    "extra": {
+        "class": "phpDocumentor\\Composer\\TemplateInstallerPlugin"
+    },
+    "require": {
+        "composer-plugin-api": "^1.0"
+    },
+    "require-dev": {
+        "composer/composer": "^1.3"
+    }
+}
