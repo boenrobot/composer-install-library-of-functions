@@ -4,10 +4,9 @@
     <file>src</file>
     <!-- Include the whole PEAR standard -->
     <rule ref="PEAR">
-        <exclude name="PEAR.NamingConventions.ValidFunctionName" />
         <exclude name="PEAR.Commenting.FileComment" />
     </rule>
-    <rule ref="PSR-2">
+    <rule ref="PSR2">
     </rule>
 
 </ruleset>

@@ -1,6 +1,6 @@
 <?php
 
-namespace boenrobot\LibraryOfFunctions;
+namespace boenrobot\Composer\FunctionHandler;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
