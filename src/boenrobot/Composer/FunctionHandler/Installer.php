@@ -41,21 +41,36 @@ class Installer extends LibraryInstaller
                 if (!isset($autoloadConfig['files']) || !is_array($autoloadConfig['files'])) {
                     $autoloadConfig['files'] = array();
                 }
+
+                $filesToRemove = array();
+                $filesToAdd = array();
                 foreach ($extraData['functionmap'][$section] as $function => $file) {
                     if (function_exists($function)) {
-                        $filesPos = array_search(
-                            $file,
-                            $autoloadConfig['files'],
-                            true
-                        );
-                        if (false !== $filesPos) {
-                            unset($autoloadConfig['files'][$filesPos]);
-                        }
+                        $filesToRemove[] = $file;
                         continue;
                     }
-                    $autoloadConfig['files'][] = $file;
+                    $filesToAdd[] = $file;
                 }
-                $autoloadConfig['files'] = array_unique($autoloadConfig['files']);
+                $filesToRemove = array_unique($filesToRemove);
+                $filesToAdd = array_unique($filesToAdd);
+
+                foreach ($filesToRemove as $file) {
+                    while (in_array($file, $autoloadConfig['files'], true)) {
+                        unset(
+                            $autoloadConfig['files'][array_search(
+                                $file,
+                                $autoloadConfig['files'],
+                                true
+                            )]
+                        );
+                    }
+                }
+                foreach ($filesToAdd as $file) {
+                    if (!in_array($file, $autoloadConfig['files'])) {
+                        $autoloadConfig['files'][] = $file;
+                    }
+                }
+
                 if (empty($autoloadConfig['files'])) {
                     unset($autoloadConfig['files']);
                 }
