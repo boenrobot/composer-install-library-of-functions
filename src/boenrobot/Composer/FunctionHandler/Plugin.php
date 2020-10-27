@@ -8,9 +8,35 @@ use Composer\Plugin\PluginInterface;
 
 class Plugin implements PluginInterface
 {
+    /**
+     * @var Installer
+     */
+    protected $installer;
+
+    /**
+     * {@inheritDoc}
+     */
     public function activate(Composer $composer, IOInterface $io)
     {
-        $installer = new Installer($io, $composer);
-        $composer->getInstallationManager()->addInstaller($installer);
+        $this->installer = new Installer($io, $composer);
+        $composer->getInstallationManager()->addInstaller($this->installer);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        if ($this->installer instanceof Installer) {
+            $composer->getInstallationManager()->removeInstaller($this->installer);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
     }
 }
