@@ -86,7 +86,7 @@ class Installer extends LibraryInstaller
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         $this->handleFunctionMap($package);
-        parent::install($repo, $package);
+        return parent::install($repo, $package);
     }
 
     /**
@@ -95,6 +95,6 @@ class Installer extends LibraryInstaller
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         $this->handleFunctionMap($target);
-        parent::update($repo, $initial, $target);
+        return parent::update($repo, $initial, $target);
     }
 }
