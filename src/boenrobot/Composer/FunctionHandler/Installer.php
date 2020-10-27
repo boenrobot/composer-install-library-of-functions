@@ -8,6 +8,7 @@ use Composer\Repository\InstalledRepositoryInterface;
 
 class Installer extends LibraryInstaller
 {
+    const JSON_KEY = 'functionmap';
 
     /**
      * Handles the "functionmap" section of the "extra" section.
@@ -26,15 +27,15 @@ class Installer extends LibraryInstaller
      *
      * @return void
      */
-    protected function handleFunctionmap(PackageInterface $package)
+    protected function handleFunctionMap(PackageInterface $package)
     {
         $extraData = $package->getExtra();
-        if (isset($extraData['functionmap'])) {
+        if (isset($extraData[self::JSON_KEY])) {
             foreach (array(
                 'autoload' => 'Autoload',
                 'autoload-dev' => 'DevAutoload'
             ) as $section => $autoloader) {
-                if (!isset($extraData['functionmap'][$section])) {
+                if (!isset($extraData[self::JSON_KEY][$section])) {
                     continue;
                 }
                 $autoloadConfig = $package->{'get' . $autoloader}();
@@ -44,7 +45,7 @@ class Installer extends LibraryInstaller
 
                 $filesToRemove = array();
                 $filesToAdd = array();
-                foreach ($extraData['functionmap'][$section] as $function => $file) {
+                foreach ($extraData[self::JSON_KEY][$section] as $function => $file) {
                     if (function_exists($function)) {
                         $filesToRemove[] = $file;
                         continue;
@@ -66,7 +67,7 @@ class Installer extends LibraryInstaller
                     }
                 }
                 foreach ($filesToAdd as $file) {
-                    if (!in_array($file, $autoloadConfig['files'])) {
+                    if (!in_array($file, $autoloadConfig['files'], true)) {
                         $autoloadConfig['files'][] = $file;
                     }
                 }
@@ -84,7 +85,7 @@ class Installer extends LibraryInstaller
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        $this->handleFunctionmap($package);
+        $this->handleFunctionMap($package);
         parent::install($repo, $package);
     }
 
@@ -93,7 +94,7 @@ class Installer extends LibraryInstaller
      */
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
-        $this->handleFunctionmap($target);
+        $this->handleFunctionMap($target);
         parent::update($repo, $initial, $target);
     }
 }
