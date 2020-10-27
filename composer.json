@@ -18,7 +18,7 @@
         "class": "boenrobot\\Composer\\FunctionHandler\\Plugin"
     },
     "require": {
-        "composer-plugin-api": "^1.0"
+        "composer-plugin-api": "^2 || ^1"
     },
     "require-dev": {
         "composer/composer": "^1.3"
